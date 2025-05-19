@@ -1,0 +1,115 @@
+body {
+    font-family: sans-serif;
+    margin: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.search-container {
+    margin-bottom: 15px;
+}
+
+.search-container label {
+    margin-right: 5px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+#assetTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+#assetTable th, #assetTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#assetTable th {
+    background-color: #f2f2f2;
+}
+
+.action-buttons button {
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.modal {
+    display: none; /* ซ่อน Modal ในตอนแรก */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#assetForm div {
+    margin-bottom: 10px;
+}
+
+#assetForm label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#assetForm input[type=text] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.modal-buttons {
+    text-align: right;
+    margin-top: 15px;
+}
+
+.modal-buttons button {
+    padding: 10px 15px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.add-button-container {
+    text-align: right;
+    margin-bottom: 15px;
+}
+
+#addAssetButton {
+    padding: 10px 20px;
+    cursor: pointer;
+}

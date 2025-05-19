@@ -1,402 +1,78 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ระบบจัดการ Asset IT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Kanit', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        #search-container {
-            display: flex;
-            margin-bottom: 20px;
-        }
-        #search-input {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-right: 10px;
-        }
-        #search-button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        #search-button:hover {
-            background-color: #0056b3;
-        }
-        #asset-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        #asset-table th, #asset-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        #asset-table th {
-            background-color: #f0f0f0;
-        }
-        #asset-table tbody tr:hover {
-            background-color: #f8f8f8;
-        }
-        #add-edit-form {
-            display: none;
-            flex-direction: column;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 10;
-            overflow-y: auto;
-            max-height: 80vh;
-        }
-        #add-edit-form label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        #add-edit-form input,
-        #add-edit-form select {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        #add-edit-form button {
-            padding: 10px 20px;
-            margin-right: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        #add-edit-form button.save {
-            background-color: #28a745;
-            color: white;
-        }
-        #add-edit-form button.save:hover {
-            background-color: #218838;
-        }
-        #add-edit-form button.cancel {
-            background-color: #dc3545;
-            color: white;
-        }
-        #add-edit-form button.cancel:hover {
-            background-color: #c82333;
-        }
-        #add-button {
-            padding: 10px 20px;
-            background-color: #17a2b8;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
-        #add-button:hover {
-            background-color: #138496;
-        }
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 9;
-        }
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            #search-container {
-                flex-direction: column;
-            }
-            #search-input {
-                margin-right: 0;
-                margin-bottom: 10px;
-            }
-            #add-edit-form {
-                width: 95%;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>ระบบจัดการ Asset IT</h1>
+    <h1>ระบบจัดการ Asset IT</h1>
 
-        <div id="search-container">
-            <input type="text" id="search-input" placeholder="ค้นหา...">
-            <button id="search-button">ค้นหา</button>
-        </div>
+    <div class="search-container">
+        <label for="search">ค้นหา:</label>
+        <input type="text" id="search" placeholder="ค้นหาจากทุกคอลัมน์...">
+    </div>
 
-        <button id="add-button">เพิ่ม Asset</button>
-
-        <table id="asset-table">
+    <div class="table-container">
+        <table id="assetTable">
             <thead>
                 <tr>
-                    <th>รหัสพนักงาน</th>
-                    <th>ชื่อพนักงาน</th>
-                    <th>ชื่ออุปกรณ์</th>
-                    <th>ประเภทอุปกรณ์</th>
-                    <th>Serial Number</th>
-                    <th>แผนก</th>
-                    <th>การจัดการ</th>
+                    <th>employee_id</th>
+                    <th>employee_name</th>
+                    <th>device_name</th>
+                    <th>device_type</th>
+                    <th>serial number</th>
+                    <th>department</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-            </tbody>
+                </tbody>
         </table>
-
-        <div id="add-edit-form">
-            <h2>เพิ่ม/แก้ไข Asset</h2>
-            <form id="asset-form">
-                <label for="employee_id">รหัสพนักงาน:</label>
-                <input type="text" id="employee_id" name="employee_id" required>
-                <label for="employee_name">ชื่อพนักงาน:</label>
-                <input type="text" id="employee_name" name="employee_name" required>
-                <label for="device_name">ชื่ออุปกรณ์:</label>
-                <input type="text" id="device_name" name="device_name" required>
-                <label for="device_type">ประเภทอุปกรณ์:</label>
-                <input type="text" id="device_type" name="device_type" required>
-                <label for="serial_number">Serial Number:</label>
-                <input type="text" id="serial_number" name="serial_number" required>
-                <label for="department">แผนก:</label>
-                <input type="text" id="department" name="department" required>
-            </form>
-            <button class="save">บันทึก</button>
-            <button class="cancel">ยกเลิก</button>
-        </div>
-
-        <div class="overlay"></div>
     </div>
 
-    <script>
-const assetTable = document.getElementById("asset-table").getElementsByTagName("tbody")[0];
-const searchInput = document.getElementById("search-input");
-const searchButton = document.getElementById("search-button");
-const addEditForm = document.getElementById("add-edit-form");
-const assetForm = document.getElementById("asset-form");
-const saveButton = addEditForm.querySelector(".save");
-const cancelButton = addEditForm.querySelector(".cancel");
-const addButton = document.getElementById("add-button");
-const overlay = document.querySelector(".overlay");
-const spreadsheetUrl = "https://script.google.com/macros/s/AKfycbzItonj3AYQkDx4nXwJ8n13po8G1AXMJ568RyphAhp98POZ_lQV1lxK7ycnuguvE0Ps/exec?action=";
+    <div class="modal" id="addEditModal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>เพิ่ม/แก้ไข Asset</h2>
+            <form id="assetForm">
+    <div>
+        <label for="modal_employee_id">Employee ID:</label>
+        <input type="text" id="modal_employee_id" required>
+    </div>
+    <div>
+        <label for="modal_employee_name">ชื่อพนักงาน:</label>
+        <input type="text" id="modal_employee_name" required>
+    </div>
+    <div>
+        <label for="modal_device_name">ชื่ออุปกรณ์:</label>
+        <input type="text" id="modal_device_name" required>
+    </div>
+    <div>
+        <label for="modal_device_type">ประเภทอุปกรณ์:</label>
+        <input type="text" id="modal_device_type" required>
+    </div>
+    <div>
+        <label for="modal_serial_number">Serial Number:</label>
+        <input type="text" id="modal_serial_number">
+    </div>
+    <div>
+        <label for="modal_department">แผนก:</label>
+        <input type="text" id="modal_department">
+    </div>
+    <div class="modal-buttons">
+        <button type="submit" id="saveButton">บันทึก</button>
+        <button type="button" class="close-button">ยกเลิก</button>
+    </div>
+</form>
+        </div>
+    </div>
 
-let editingIndex = null;
+    <div class="add-button-container">
+        <button id="addAssetButton">เพิ่ม Asset ใหม่</button>
+    </div>
 
-/**
- * แสดงข้อมูล Asset IT ในตาราง
- * @param {Array<Array>} data ข้อมูล Asset IT ในรูปแบบอาร์เรย์สองมิติ
- */
-function displayAssetData(data) {
-  assetTable.innerHTML = "";
-  if (!data || data.length === 0) {
-    assetTable.innerHTML = "<tr><td colspan='7' style='text-align:center;'>ไม่พบข้อมูล</td></tr>";
-    return;
-  }
-  data.forEach((row, index) => {
-    const tr = assetTable.insertRow();
-    row.forEach(cell => {
-      const td = tr.insertCell();
-      td.textContent = cell;
-    });
-    const actions = tr.insertCell();
-    const editButton = document.createElement("button");
-    editButton.textContent = "แก้ไข";
-    editButton.onclick = () => showEditForm(index, row);
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "ลบ";
-    deleteButton.onclick = () => deleteAsset(index);
-    actions.appendChild(editButton);
-    actions.appendChild(deleteButton);
-  });
-}
-
-/**
- * ดึงข้อมูล Asset IT จาก Google Sheets และแสดงผล โดยใช้ Fetch API
- */
-function loadAssetData() {
-  fetch(spreadsheetUrl + "getAssetData")
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      displayAssetData(data);
-    })
-    .catch(error => {
-      console.error("Error fetching data:", error);
-      alert("Failed to load data. Please check console for details.  Error: " + error.message);
-    });
-}
-
-/**
- * ค้นหา Asset IT และแสดงผล
- */
-function searchAssets() {
-  const query = searchInput.value.trim();
-  fetch(spreadsheetUrl + "searchAssets&query=" + query)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      displayAssetData(data);
-    })
-    .catch(error => {
-      console.error("Error searching assets:", error);
-      alert("Failed to search assets. Please check console for details. Error: " + error.message);
-    });
-}
-
-/**
- * แสดงฟอร์มเพิ่ม/แก้ไข Asset IT
- */
-function showEditForm(index = null, data = null) {
-  editingIndex = index;
-  assetForm.reset();
-  if (data) {
-    document.querySelector("#add-edit-form h2").textContent = "แก้ไข Asset";
-    document.getElementById("employee_id").value = data[0];
-    document.getElementById("employee_name").value = data[1];
-    document.getElementById("device_name").value = data[2];
-    document.getElementById("device_type").value = data[3];
-    document.getElementById("serial_number").value = data[4];
-    document.getElementById("department").value = data[5];
-  } else {
-    document.querySelector("#add-edit-form h2").textContent = "เพิ่ม Asset";
-  }
-  addEditForm.style.display = "flex";
-  overlay.style.display = "block";
-}
-
-/**
- * เพิ่ม/แก้ไข Asset IT ใน Google Sheets โดยใช้ Fetch API
- */
-function saveAsset() {
-  const formData = new FormData(assetForm);
-  const assetData = {
-    employee_id: formData.get("employee_id"),
-    employee_name: formData.get("employee_name"),
-    device_name: formData.get("device_name"),
-    device_type: formData.get("device_type"),
-    serial_number: formData.get("serial_number"),
-    department: formData.get("department")
-  };
-
-  const method = editingIndex === null ? "POST" : "PUT";
-  let url = spreadsheetUrl;
-  if (editingIndex !== null) {
-    url += "updateAsset&row=" + (editingIndex + 2);
-  } else {
-    url += "addAsset";
-  }
-
-  fetch(url, {
-    method: method,
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(assetData)
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      loadAssetData();
-      hideAddEditForm();
-      alert(data.message);
-    })
-    .catch(error => {
-      console.error("Error saving asset:", error);
-      alert("Failed to save asset. Please check console for details. Error: " + error.message);
-    });
-}
-
-/**
- * ลบ Asset IT ออกจาก Google Sheets โดยใช้ Fetch API
- * @param {number} index index ของ asset ที่ต้องการลบ
- */
-function deleteAsset(index) {
-  if (confirm("Are you sure you want to delete this asset?")) {
-    fetch(spreadsheetUrl + "deleteAsset&row=" + (index + 2), {
-      method: "DELETE"
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        loadAssetData();
-        alert(data.message);
-      })
-      .catch(error => {
-        console.error("Error deleting asset:", error);
-        alert("Failed to delete asset. Please check console for details. Error: " + error.message);
-      });
-  }
-}
-
-/**
- * ซ่อนฟอร์มเพิ่ม/แก้ไข Asset IT
- */
-function hideAddEditForm() {
-  addEditForm.style.display = "none";
-  overlay.style.display = "none";
-  editingIndex = null;
-}
-
-// Event Listeners
-searchButton.addEventListener("click", searchAssets);
-addButton.addEventListener("click", showEditForm);
-saveButton.addEventListener("click", saveAsset);
-cancelButton.addEventListener("click", hideAddEditForm);
-overlay.addEventListener("click", hideAddEditForm);
-
-// โหลดข้อมูลเริ่มต้น
-window.onload = () => {
-  loadAssetData();
-}
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
